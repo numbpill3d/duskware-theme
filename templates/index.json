@@ -1,0 +1,98 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-sigil",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "DUSKWARE / Alternative Fashion",
+        "heading": "<p>Alternative fashion for <em>after dark.</em></p>",
+        "subheading": "<p>Curated gothic, punk, techwear, Y2K and Japanese alternative clothing with clear material, fit and sizing details.</p>",
+        "button_label": "Shop new arrivals",
+        "button_link": "shopify://collections/new-arrivals",
+        "button_label_2": "Explore gothic & punk",
+        "button_link_2": "shopify://collections/gothic-punk",
+        "padding_top": 92,
+        "padding_bottom": 60
+      }
+    },
+    "marquee": {
+      "type": "marquee-band",
+      "settings": {
+        "text": "Gothic & Punk",
+        "text_2": "Techwear",
+        "text_3": "Y2K & Grunge",
+        "text_4": "Japanese Alternative"
+      }
+    },
+    "style_collections": {
+      "type": "collection-list",
+      "blocks": {
+        "gothic-punk": {
+          "type": "featured_collection",
+          "settings": { "collection": "gothic-punk" }
+        },
+        "techwear": {
+          "type": "featured_collection",
+          "settings": { "collection": "techwear" }
+        },
+        "y2k-grunge": {
+          "type": "featured_collection",
+          "settings": { "collection": "y2k-grunge" }
+        },
+        "japanese-alternative": {
+          "type": "featured_collection",
+          "settings": { "collection": "japanese-alternative" }
+        }
+      },
+      "block_order": ["gothic-punk", "techwear", "y2k-grunge", "japanese-alternative"],
+      "settings": {
+        "title": "Shop by aesthetic",
+        "heading_size": "h1",
+        "image_ratio": "portrait",
+        "columns_desktop": 4,
+        "color_scheme": "scheme-1",
+        "show_view_all": true,
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 44,
+        "padding_bottom": 36
+      }
+    },
+    "featured_collection": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "New arrivals",
+        "heading_size": "h2",
+        "description": "<p>Fresh additions to the DUSKWARE alternative-fashion edit.</p>",
+        "show_description": true,
+        "description_style": "body",
+        "collection": "new-arrivals",
+        "products_to_show": 8,
+        "columns_desktop": 4,
+        "color_scheme": "scheme-1",
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "swipe_on_mobile": false,
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "standard",
+        "columns_mobile": "2",
+        "padding_top": 44,
+        "padding_bottom": 36
+      }
+    },
+    "manifesto": {
+      "type": "manifesto",
+      "settings": {
+        "quote": "<p>Build a wardrobe outside the ordinary—one piece, one layer and one detail at a time.</p>",
+        "citation": "DUSKWARE"
+      }
+    }
+  },
+  "order": ["hero", "marquee", "style_collections", "featured_collection", "manifesto"]
+}

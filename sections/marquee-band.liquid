@@ -1,0 +1,26 @@
+{{ 'section-marquee-band.css' | asset_url | stylesheet_tag }}
+
+<div class="dw-marquee" aria-hidden="true">
+  <div class="dw-marquee__track">
+    {%- for i in (1..2) -%}
+      {%- if section.settings.text != blank -%}<span>{{ section.settings.text | escape }}</span>{%- endif -%}
+      {%- if section.settings.text_2 != blank -%}<span>{{ section.settings.text_2 | escape }}</span>{%- endif -%}
+      {%- if section.settings.text_3 != blank -%}<span>{{ section.settings.text_3 | escape }}</span>{%- endif -%}
+      {%- if section.settings.text_4 != blank -%}<span>{{ section.settings.text_4 | escape }}</span>{%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Marquee band",
+  "class": "section",
+  "settings": [
+    { "type": "text", "id": "text", "label": "Item 1", "default": "No Gods, Only Drops" },
+    { "type": "text", "id": "text_2", "label": "Item 2", "default": "Limited Runs" },
+    { "type": "text", "id": "text_3", "label": "Item 3", "default": "Numbered Pieces" },
+    { "type": "text", "id": "text_4", "label": "Item 4", "default": "Duskware" }
+  ],
+  "presets": [{ "name": "Marquee band" }]
+}
+{% endschema %}

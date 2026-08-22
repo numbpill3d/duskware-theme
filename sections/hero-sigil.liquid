@@ -1,0 +1,243 @@
+{{ 'section-hero-sigil.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="dw-hero color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="page-width dw-hero__grid">
+    <div class="dw-hero__copy">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="dw-eyebrow dw-hero__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h1 class="dw-hero__heading">{{ section.settings.heading }}</h1>
+      {%- endif -%}
+
+      {%- if section.settings.subheading != blank -%}
+        <div class="dw-hero__lede rte">{{ section.settings.subheading }}</div>
+      {%- endif -%}
+
+      <div class="dw-hero__actions">
+        {%- if section.settings.button_label != blank -%}
+          <a
+            {% if section.settings.button_link == blank %}
+              role="link" aria-disabled="true"
+            {% else %}
+              href="{{ section.settings.button_link }}"
+            {% endif %}
+            class="button button--primary"
+          >
+            {{ section.settings.button_label | escape }}
+          </a>
+        {%- endif -%}
+        {%- if section.settings.button_label_2 != blank -%}
+          <a
+            {% if section.settings.button_link_2 == blank %}
+              role="link" aria-disabled="true"
+            {% else %}
+              href="{{ section.settings.button_link_2 }}"
+            {% endif %}
+            class="button button--secondary"
+          >
+            {{ section.settings.button_label_2 | escape }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="dw-hero__sigil-wrap" aria-hidden="true">
+      <canvas id="dw-sigil-{{ section.id }}" class="dw-sigil-canvas" width="600" height="600"></canvas>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var canvas = document.getElementById('dw-sigil-{{ section.id }}');
+    if (!canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext('2d');
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var size = 600;
+    canvas.width = size * dpr;
+    canvas.height = size * dpr;
+    ctx.scale(dpr, dpr);
+
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var cx = size / 2, cy = size / 2;
+    var rafId;
+
+    function draw(t) {
+      ctx.clearRect(0, 0, size, size);
+      var rot = reduceMotion ? 0 : t * 0.00006;
+
+      ctx.strokeStyle = 'rgba(154,143,174,0.55)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 230, 0, Math.PI * 2);
+      ctx.stroke();
+
+      for (var i = 0; i < 48; i++) {
+        var a = (i / 48) * Math.PI * 2 + rot * 0.4;
+        var inner = i % 6 === 0 ? 214 : 222;
+        var x1 = cx + Math.cos(a) * inner, y1 = cy + Math.sin(a) * inner;
+        var x2 = cx + Math.cos(a) * 230, y2 = cy + Math.sin(a) * 230;
+        ctx.strokeStyle = i % 6 === 0 ? 'rgba(232,58,214,0.7)' : 'rgba(154,143,174,0.3)';
+        ctx.lineWidth = i % 6 === 0 ? 1.2 : 0.6;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+        ctx.stroke();
+      }
+
+      ctx.save();
+      ctx.strokeStyle = 'rgba(138,62,232,0.85)';
+      ctx.lineWidth = 1.1;
+      ctx.shadowColor = 'rgba(138,62,232,0.55)';
+      ctx.shadowBlur = 14;
+      ctx.beginPath();
+      var points = 7, r = 168, step = 3;
+      for (var p = 0; p <= points; p++) {
+        var idx = (p * step) % points;
+        var a2 = rot + (idx / points) * Math.PI * 2 - Math.PI / 2;
+        var x = cx + Math.cos(a2) * r, y = cy + Math.sin(a2) * r;
+        if (p === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.strokeStyle = 'rgba(228,224,245,0.8)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 82, 0, Math.PI * 2);
+      ctx.stroke();
+
+      var traceAngles = [20, 95, 165, 250, 305];
+      traceAngles.forEach(function (deg, i) {
+        var a3 = (deg * Math.PI) / 180 + rot * 0.2;
+        var startR = 230, midR = 262, endR = i % 2 === 0 ? 22 : -22;
+        var x0 = cx + Math.cos(a3) * startR, y0 = cy + Math.sin(a3) * startR;
+        var x1 = cx + Math.cos(a3) * midR, y1 = cy + Math.sin(a3) * midR;
+        var x2 = x1 + Math.cos(a3 + Math.PI / 2) * endR;
+        var y2 = y1 + Math.sin(a3 + Math.PI / 2) * endR;
+        ctx.strokeStyle = 'rgba(232,58,214,0.55)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.lineTo(x2, y2);
+        ctx.stroke();
+        ctx.fillStyle = 'rgba(232,58,214,0.85)';
+        ctx.beginPath();
+        ctx.arc(x2, y2, 2.2, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      ctx.fillStyle = 'rgba(237,231,240,0.9)';
+      ctx.beginPath();
+      ctx.arc(cx, cy, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      if (!reduceMotion) rafId = window.requestAnimationFrame(draw);
+    }
+
+    window.requestAnimationFrame(draw);
+
+    document.addEventListener('shopify:section:unload', function (e) {
+      if (e.detail.sectionId === '{{ section.id }}' && rafId) cancelAnimationFrame(rafId);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Hero (sigil)",
+  "class": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Collection 001"
+    },
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Wrap a word in italics to give it the chrome-gradient treatment.",
+      "default": "<p>Wear the hour <em>between</em> day and dark.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>Heavyweight streetwear cut for the liminal hour — engraved hardware, sigils drawn from no book you've read.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Primary button label",
+      "default": "Enter the drop"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "button_label_2",
+      "label": "Secondary button label",
+      "default": "View lookbook"
+    },
+    {
+      "type": "url",
+      "id": "button_link_2",
+      "label": "Secondary button link"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 92
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero (sigil)"
+    }
+  ]
+}
+{% endschema %}

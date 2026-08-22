@@ -1,0 +1,46 @@
+{
+  "sections": {
+    "main": {
+      "type": "faq-accordion",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "Field notes",
+        "heading": "Frequently asked questions",
+        "padding_top": 60,
+        "padding_bottom": 80
+      },
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "How long does shipping take?",
+            "answer": "<p>Orders ship within 2–3 business days. Domestic delivery typically takes 4–7 business days.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "Do you restock sold-out sizes?",
+            "answer": "<p>No — every drop is a limited, numbered run. Once a size sells out, it's gone for that run.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "What's your return policy?",
+            "answer": "<p>Unworn items in original condition can be returned within 14 days of delivery. See our Returns page for details.</p>"
+          }
+        },
+        "q4": {
+          "type": "question",
+          "settings": {
+            "question": "How do I know my size?",
+            "answer": "<p>Check the size guide linked on each product page — fits run true to size unless noted.</p>"
+          }
+        }
+      },
+      "block_order": ["q1", "q2", "q3", "q4"]
+    }
+  },
+  "order": ["main"]
+}

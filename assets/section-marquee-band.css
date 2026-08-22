@@ -1,0 +1,41 @@
+.dw-marquee {
+  border-block: 1px solid var(--dw-line);
+  background: var(--dw-surface);
+  overflow: hidden;
+  white-space: nowrap;
+  padding-block: 0.9rem;
+}
+
+.dw-marquee__track {
+  display: inline-flex;
+  font-family: var(--font-heading-family);
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dw-ash-dim);
+  animation: dw-scroll-left 26s linear infinite;
+}
+
+.dw-marquee__track span {
+  padding-inline: 1.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+.dw-marquee__track span::after {
+  content: "◆";
+  color: var(--dw-violet);
+  font-size: 0.6rem;
+}
+
+@keyframes dw-scroll-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dw-marquee__track {
+    animation: none;
+  }
+}

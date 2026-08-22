@@ -1,0 +1,280 @@
+/*
+  DUSKWARE design system
+  Loaded after base.css / component-*.css — overrides Dawn's CSS custom
+  properties (so every existing template inherits the palette for free)
+  and adds the bespoke classes used by the custom sections/snippets.
+*/
+
+@font-face {
+  font-family: 'Cinzel';
+  font-style: normal;
+  font-weight: 500 700;
+  font-display: swap;
+  src: url("{{ 'cinzel-var.woff2' | asset_url }}") format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("{{ 'plexsans-var.woff2' | asset_url }}") format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("{{ 'plexmono-400.woff2' | asset_url }}") format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("{{ 'plexmono-500.woff2' | asset_url }}") format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("{{ 'plexmono-600.woff2' | asset_url }}") format('woff2');
+}
+
+:root {
+  /* override Dawn's font variables so every existing template picks these up */
+  --font-heading-family: 'Cinzel', serif;
+  --font-heading-style: normal;
+  --font-heading-weight: 600;
+  --font-body-family: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-body-style: normal;
+  --font-body-weight: 400;
+  --font-body-weight-bold: 600;
+
+  /* DUSKWARE tokens — sampled from the logo (electric magenta + blue + chrome on black) */
+  --dw-ground: #0b0710;
+  --dw-surface: #1a1220;
+  --dw-raised: #241a30;
+  --dw-line: #3a2c4a;
+  --dw-bone: #ede7f0;
+  --dw-ash: #9a8fae;
+  --dw-ash-dim: #6b5f80;
+  --dw-magenta: #e83ad6;
+  --dw-magenta-dim: #a62ca0;
+  --dw-blue: #5c6cff;
+  --dw-chrome-a: #e4e0f5;
+  --dw-chrome-b: #7b7fa8;
+  --dw-violet: #8a3ee8;
+  --dw-violet-glow: rgba(138, 62, 232, 0.35);
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+/* ambient grain overlay, site-wide */
+body {
+  position: relative;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 500;
+  opacity: 0.03;
+  background-image: repeating-linear-gradient(0deg, #fff 0px, #fff 1px, transparent 1px, transparent 3px);
+  mix-blend-mode: overlay;
+}
+
+/* headings get a touch of tracking, uppercase for section-style headings */
+h1, h2, h3, .h1, .h2, .h3 {
+  letter-spacing: 0.01em;
+}
+
+/* buttons: mono label, tracked, uppercase, glow-on-hover instead of Dawn's default hover */
+.button,
+button.button,
+.shopify-payment-button__button {
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  border-radius: 0;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.button--primary:not([disabled]):hover,
+.shopify-payment-button__button--unbranded:hover {
+  box-shadow: 0 0 0 3px var(--dw-violet-glow);
+  transform: translateY(-1px);
+}
+
+/* nav: mono, tracked, uppercase, blue underline on interaction */
+.header__inline-menu .list-menu__item {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.header__inline-menu .list-menu__item:hover,
+.header__inline-menu summary:hover .list-menu__item {
+  color: var(--dw-blue);
+}
+
+/* price: tabular mono, magenta accent on sale price */
+.price {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+.price__sale .price-item--sale {
+  color: rgb(var(--color-button));
+}
+
+/* badges: mono + tracked */
+.badge {
+  font-family: var(--font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 0;
+}
+
+/* eyebrow utility — used across custom sections */
+.dw-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dw-magenta);
+}
+
+/* chrome gradient text utility */
+.dw-chrome-text {
+  background: linear-gradient(120deg, var(--dw-chrome-a), var(--dw-chrome-b) 55%, var(--dw-chrome-a));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* focus visibility, brand-tinted */
+a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--dw-violet);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dw-marquee__track, .dw-ticker__track { animation: none !important; }
+}
+
+/* ---------- announcement bar: status-readout treatment ---------- */
+.announcement-bar__message {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.announcement-bar__message::before {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--dw-magenta);
+  box-shadow: 0 0 6px var(--dw-magenta);
+  margin-right: 0.6em;
+  vertical-align: middle;
+}
+.utility-bar {
+  border-bottom: 1px solid var(--dw-line);
+}
+
+/* ---------- sticky header: frosted dusk panel ---------- */
+.header-wrapper {
+  background: rgba(11, 7, 16, 0.86);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.header__heading-logo,
+a.header__heading-link {
+  font-family: var(--font-heading-family);
+  letter-spacing: 0.12em;
+}
+
+/* ---------- footer: colophon treatment ---------- */
+.footer {
+  border-top: 1px solid var(--dw-line);
+}
+.footer-block__heading {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dw-ash);
+}
+.footer-block__brand-info .footer-block__heading {
+  font-family: var(--font-heading-family);
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  text-transform: none;
+  color: var(--dw-bone);
+}
+.newsletter-form__field-wrapper {
+  border: 1px solid var(--dw-line);
+}
+.newsletter-form input {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+.newsletter-form__button {
+  background: var(--dw-magenta);
+  color: var(--dw-ground, #0b0710);
+}
+.footer__content-bottom {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: var(--dw-ash-dim);
+}
+
+/* ---------- product cards: artifact/tarot-card corner brackets ---------- */
+.card {
+  position: relative;
+}
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  background-repeat: no-repeat;
+  background-size: 14px 14px;
+  background-position: top left, top left, top right, top right, bottom right, bottom right, bottom left, bottom left;
+  background-image:
+    linear-gradient(to right, var(--dw-magenta) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--dw-magenta) 1px, transparent 1px),
+    linear-gradient(to left, var(--dw-magenta) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--dw-magenta) 1px, transparent 1px),
+    linear-gradient(to left, var(--dw-magenta) 1px, transparent 1px),
+    linear-gradient(to top, var(--dw-magenta) 1px, transparent 1px),
+    linear-gradient(to right, var(--dw-magenta) 1px, transparent 1px),
+    linear-gradient(to top, var(--dw-magenta) 1px, transparent 1px);
+}
+.card-wrapper:hover .card::after,
+.card:hover::after {
+  opacity: 1;
+}
+.card__heading {
+  font-family: var(--font-heading-family);
+  letter-spacing: 0.01em;
+}
+.card__badge .badge {
+  font-size: 0.62rem;
+}
+.card__media .placeholder-svg {
+  background:
+    radial-gradient(circle at 30% 20%, rgba(138, 62, 232, 0.25), transparent 55%),
+    radial-gradient(circle at 75% 80%, rgba(232, 58, 214, 0.16), transparent 55%),
+    linear-gradient(160deg, var(--dw-raised), var(--dw-surface));
+  fill: var(--dw-ash-dim);
+}
